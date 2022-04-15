@@ -1,14 +1,16 @@
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 import { Button, Container, Form } from 'react-bootstrap';
 import { Link, useNavigate } from 'react-router-dom';
 import { useCreateUserWithEmailAndPassword, useUpdateProfile} from 'react-firebase-hooks/auth';
 import auth from '../../../firebase.init';
+import Loading from '../../Shared/Loading/Loading';
 
 const Register = () => {
     const fullNameRef = useRef('');
     const emailRef = useRef('');
     const passwordRef = useRef('');
     const navigate = useNavigate();
+    const [agree, setAgree] = useState(false);
     const [
         createUserWithEmailAndPassword,
         user,
@@ -26,6 +28,10 @@ const Register = () => {
         await createUserWithEmailAndPassword(email, password);
         await updateProfile({ displayName: fullName });
         navigate('/');
+    }
+
+    if(loading || updating) {
+        return <Loading></Loading>
     }
 
     return (
@@ -49,9 +55,9 @@ const Register = () => {
                             <Form.Control ref={passwordRef} type="password" placeholder="Password" required/>
                         </Form.Group>
                         <Form.Group className="mb-3" controlId="formBasicCheckbox">
-                            <Form.Check type="checkbox" label="Accept Terms and Conditions" />
+                            <Form.Check onClick={() => setAgree(!agree)} type="checkbox" label="Accept Terms and Conditions" />
                         </Form.Group>
-                        <Button variant="info" className='text-light' type="submit">
+                        <Button disabled={!agree} variant="info" className='text-light' type="submit">
                             Sign Up
                         </Button>
                     </Form>

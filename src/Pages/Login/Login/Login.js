@@ -1,8 +1,9 @@
-import React, { useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { Button, Container, Form } from 'react-bootstrap';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useSignInWithEmailAndPassword } from 'react-firebase-hooks/auth';
 import auth from '../../../firebase.init';
+import Loading from '../../Shared/Loading/Loading';
 
 const Login = () => {
     const emailRef = useRef('');
@@ -16,7 +17,15 @@ const Login = () => {
         error,
       ] = useSignInWithEmailAndPassword(auth);
 
-      let from = location.state?.from?.pathname || "/";
+    let from = location.state?.from?.pathname || "/";
+    
+    useEffect(() => {
+        user && navigate(from, { replace: true });
+    },[user, navigate, from]);
+
+    if(loading) {
+        return <Loading></Loading>
+    }
 
     const handleLogin = event => {
         event.preventDefault();
@@ -24,10 +33,7 @@ const Login = () => {
         const password = passwordRef.current.value;
 
         signInWithEmailAndPassword(email,password);
-        console.table([email,password]);
     }
-
-    user &&  navigate(from, { replace: true });
 
     return (
         <Container className='min-vh-100 d-flex justify-content-center'>
