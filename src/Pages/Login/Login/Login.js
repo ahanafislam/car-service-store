@@ -1,18 +1,22 @@
 import React, { useRef } from 'react';
 import { Button, Container, Form } from 'react-bootstrap';
-import { Link } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useSignInWithEmailAndPassword } from 'react-firebase-hooks/auth';
 import auth from '../../../firebase.init';
 
 const Login = () => {
     const emailRef = useRef('');
     const passwordRef = useRef('');
+    const navigate = useNavigate();
+    const location = useLocation();
     const [
         signInWithEmailAndPassword,
         user,
         loading,
         error,
       ] = useSignInWithEmailAndPassword(auth);
+
+      let from = location.state?.from?.pathname || "/";
 
     const handleLogin = event => {
         event.preventDefault();
@@ -22,6 +26,8 @@ const Login = () => {
         signInWithEmailAndPassword(email,password);
         console.table([email,password]);
     }
+
+    user &&  navigate(from, { replace: true });
 
     return (
         <Container className='min-vh-100 d-flex justify-content-center'>
