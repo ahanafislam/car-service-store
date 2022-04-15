@@ -17,7 +17,7 @@ const Register = () => {
         loading,
         error,
       ] = useCreateUserWithEmailAndPassword(auth);
-    const [updateProfile, updating, updateError] = useUpdateProfile(auth);
+    const [updateProfile, updating, updateError] = useUpdateProfile(auth, {sendEmailVerification: true});
 
     const handleRegister = async event => {
         event.preventDefault();
