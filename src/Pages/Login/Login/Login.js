@@ -7,6 +7,7 @@ import Loading from '../../Shared/Loading/Loading';
 import { useSendPasswordResetEmail } from 'react-firebase-hooks/auth';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import SocialLogin from '../SocialLogin/SocialLogin';
 
 const Login = () => {
     const emailRef = useRef('');
@@ -80,6 +81,7 @@ const Login = () => {
                         <p className='mt-2'>New to Genius? <Link to="/register" className='text-primary pe-auto text-decoration-none'>Please Register</Link> </p>
                         <p>Forget Password? <button onClick={resetPassword} className='btn btn-link text-primary pe-auto text-decoration-none'>Reset Password</button> </p>
                     </Form>
+                    <SocialLogin></SocialLogin>
                     <ToastContainer />
                 </div>
             </div>
