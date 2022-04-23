@@ -8,9 +8,10 @@ import auth from '../../../firebase.init';
 
 const Header = () => {
     const [user, loading, error] = useAuthState(auth);
+
     return (
         <>
-            <Navbar collapseOnSelect expand="lg" sticky='top' bg="info" variant="dark">
+            <Navbar collapseOnSelect expand="lg" sticky='top' bg="info" variant='dark'>
                 <Container>
                     <Navbar.Brand as={Link} to="/">
                         <img height={30} src={logo} alt="Logo" />
@@ -30,6 +31,12 @@ const Header = () => {
                         </Nav>
                         <Nav>
                         <Nav.Link as={Link} to="/about">About</Nav.Link>
+                        {
+                            user && <>
+                                <Nav.Link as={Link} to="addservice">Add</Nav.Link>
+                                <Nav.Link as={Link} to="manage">Manage</Nav.Link>
+                            </>
+                        }
                         {
                             user
                             ?
