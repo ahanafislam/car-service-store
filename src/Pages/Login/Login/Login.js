@@ -8,6 +8,7 @@ import { useSendPasswordResetEmail } from 'react-firebase-hooks/auth';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import SocialLogin from '../SocialLogin/SocialLogin';
+import axios from 'axios';
 
 const Login = () => {
     const emailRef = useRef('');
@@ -26,9 +27,9 @@ const Login = () => {
 
     let from = location.state?.from?.pathname || "/";
     
-    useEffect(() => {
-        user && navigate(from, { replace: true });
-    },[user, navigate, from]);
+    // useEffect(() => {
+    //     user && navigate(from, { replace: true });
+    // },[user, navigate, from]);
 
     if(loading || sending) {
         return <Loading></Loading>
@@ -38,12 +39,15 @@ const Login = () => {
         errorElement = <p className='text-danger'>{error?.message}</p>
     }
 
-    const handleLogin = event => {
+    const handleLogin = async event => {
         event.preventDefault();
         const email = emailRef.current.value;
         const password = passwordRef.current.value;
 
-        signInWithEmailAndPassword(email,password);
+        await signInWithEmailAndPassword(email,password);
+        const {data} = await axios.post('http://localhost:5000/login', {email});
+        localStorage.setItem('accessToken', data.accessToken);
+        navigate(from, { replace: true });
     }
 
     const resetPassword = async () => {
